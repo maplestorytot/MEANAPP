@@ -1,0 +1,35 @@
+<!--multi allows more than one expansion panel to be expanded at a time-->
+<!--ngif can include a function that returns true or false-->
+<mat-spinner *ngIf="isLoading"> </mat-spinner>
+<mat-accordion multi="true" *ngIf="posts.length>0 && !isLoading">
+    <!--ngFor is a for look looping through posts data array, creating posts one after another-->
+     <mat-expansion-panel *ngFor="let postindex of posts">
+         <mat-expansion-panel-header>
+             <!--Each post item can be accessed through {{}}-->
+            {{postindex.title}}
+        </mat-expansion-panel-header>
+
+         <p>{{postindex.content}}</p>
+         <div class="post-image">
+          <img [src]="postindex.imagePath" [alt]="postindex.title">
+        </div>
+         <!--Action row is the edit and delete button, userId is the one logged on, postcreator is the who made the post -->
+         <mat-action-row *ngIf='userIsAuthenticated &&userId===postindex.creator'>
+          <!--new type of router Link that has individual segnments that we want to look to
+          rerender the new page, here passing the post's id that we're looping through-->
+         <a mat-button color="primary" [routerLink]="['/edit',postindex.id]">EDIT</a>
+         <!--On delete passes the postindex.id as a parameter-->
+         <button mat-button color="warn" (click)="onDelete(postindex.id)">Delete</button>
+
+                  </mat-action-row>
+
+
+     </mat-expansion-panel>
+</mat-accordion>
+<!--length is howmany posts in total, page size is # posts per page, (page) is the event that occurs when you change the page size options
+and onChangedPage is a method created in the component.ts behind it...$event is allow you to receive more data from the method/event occurring-->
+<mat-paginator [length]='totalPosts' [pageSize]='postsPerPage' [pageSizeOptions]='pageSizeOptions' (page)='onChangedPage($event)' *ngIf="posts.length>0">
+</mat-paginator>
+<!--Second part of function-->
+<!--post-info is adding a specific class name, mat-body-1 is found on the angular material text-->
+<p id="post-info" class="mat-body-1" *ngIf="posts.length <= 0 &&!isLoading">No posts added yet</p>

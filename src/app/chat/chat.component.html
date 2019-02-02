@@ -1,0 +1,14 @@
+<body>
+  <form (submit)="onSocket(socketForm)" #socketForm='ngForm' *ngIf='!isLoading'>
+      <ul *ngFor="let messages of currentMessages">
+         <li>
+           {{messages}}
+         </li>
+      </ul>
+
+    <input color="main" type="text" name="socket" ngModel #socket="ngModel" required>
+    <br>
+    <button type="submit"></button>
+  </form>
+
+</body>
